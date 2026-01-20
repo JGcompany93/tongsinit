@@ -278,11 +278,6 @@ const CATALOG: TelcoCatalog[] = [
 ];
 
 /* =======================
-   Telco Icon Map (public 경로)
-======================= */
-
-
-/* =======================
    Page
 ======================= */
 export default function Internet() {
@@ -354,26 +349,24 @@ export default function Internet() {
           <section className="flex items-start justify-center gap-8">
             <div className="w-[140px] pt-2 text-xl font-bold">통신사</div>
 
-<div className="w-full max-w-[820px] pl-5">
-  <WindowCarousel
-    items={CATALOG.map((c) => ({ id: c.telco, label: c.label }))}
-    selectedId={telco}
-    onSelect={(id) => handleSelectTelco(id as TelcoKey)}
-    // 통신사 카드만 세로 작게
-    cardClassName="rounded-lg border border-gray-300 px-3 py-4 text-left transition min-h-[72px]"
-    emptyClassName="rounded-lg border border-transparent px-3 py-4 min-h-[72px]"
-    renderCard={(item) => (
-      <div className="flex h-full w-full items-center justify-center">
-        <span className="text-base font-extrabold tracking-wide">
-          {item.label}
-        </span>
-      </div>
-    )}
-  />
-</div>
-
-
-
+            <div className="w-full max-w-[820px] pl-5">
+              <WindowCarousel
+                items={CATALOG.map((c) => ({ id: c.telco, label: c.label }))}
+                selectedId={telco}
+                onSelect={(id) => handleSelectTelco(id as TelcoKey)}
+                // 통신사 카드만 세로 작게
+                cardClassName="rounded-lg border border-gray-300 px-3 py-4 text-left transition min-h-[72px]"
+                emptyClassName="rounded-lg border border-transparent px-3 py-4 min-h-[72px]"
+                renderCard={(item) => (
+                  <div className="flex h-full w-full items-center justify-center">
+                    {/* ✅ 모바일에서 너무 커/잘림 방지: 폰트만 반응형으로 축소 */}
+                    <span className="font-extrabold tracking-wide text-sm sm:text-base">
+                      {item.label}
+                    </span>
+                  </div>
+                )}
+              />
+            </div>
           </section>
 
           {/* 인터넷 속도 */}
