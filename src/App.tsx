@@ -3,15 +3,13 @@ import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
 import Internet from "./pages/Internet";
-
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
     <Routes>
-      {/* 로그인: 헤더/푸터 없는 단독 화면 */}
-      {/* 나머지: 헤더/푸터 포함 */}
+      {/* 공통 레이아웃 (Header / Footer 포함) */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/internet" element={<Internet />} />

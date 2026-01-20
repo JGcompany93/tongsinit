@@ -574,15 +574,6 @@ export default function Home() {
           <ReviewsSlider reviews={reviews} />
         </div>
 
-        <footer className="border-t border-white/15 bg-white/10 backdrop-blur">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6 text-xs text-white/80">
-            상호명: ㈜예시통신 | 대표자: 홍길동
-            <br />
-            사업자등록번호: 123-45-67890
-            <br />
-            주소: 서울특별시 ○○구 ○○로 123
-          </div>
-        </footer>
       </section>
     </>
   );
