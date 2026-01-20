@@ -11,6 +11,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
+  // ✅ PC 메뉴는 그대로(인터넷 포함)
   const items = useMemo(
     () => [
       { label: "홈", to: "/" },
@@ -18,6 +19,12 @@ export default function Header() {
       { label: "고객지원", to: "/support" },
     ],
     []
+  );
+
+  // ✅ 모바일 드로어에서만 "인터넷" 숨김
+  const mobileItems = useMemo(
+    () => items.filter((it) => it.to !== "/internet"),
+    [items]
   );
 
   useEffect(() => {
@@ -182,9 +189,9 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* 메뉴 리스트 */}
+              {/* ✅ 모바일 메뉴 리스트 (인터넷 제외) */}
               <nav className="px-3 py-4">
-                {items.map((it) => {
+                {mobileItems.map((it) => {
                   const active = isActivePath(it.to);
                   return (
                     <NavLink
