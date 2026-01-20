@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 
+/* =======================
+   Types
+======================= */
 type TelcoKey = "KT" | "LGU+" | "SK" | "SKYLIFE" | "HELLO";
 
 type InternetPlan = {
@@ -24,6 +27,9 @@ type TelcoCatalog = {
   tv: TvPlan[];
 };
 
+/* =======================
+   Utils
+======================= */
 function formatWon(n: number) {
   return `${n.toLocaleString("ko-KR")}원`;
 }
@@ -32,16 +38,18 @@ function formatSpeed(speedMbps: number) {
   return speedMbps >= 1000 ? "1 Gbps" : `${speedMbps} Mbps`;
 }
 
-/** ✅ 총요금 슬롯머신 숫자 (항상 보이게: 1em 단위로 이동) */
+/* =======================
+   Slot Number (Total)
+======================= */
 function SlotNumber({ value }: { value: number }) {
   const str = value.toLocaleString("ko-KR");
 
   return (
-    <span className="inline-flex items-baseline">
+    <span className="inline-flex items-baseline leading-none">
       {str.split("").map((ch, i) => {
         if (ch === ",") {
           return (
-            <span key={`c-${i}`} className="mx-[0.08em]">
+            <span key={`c-${i}`} className="mx-[0.08em] leading-none">
               ,
             </span>
           );
@@ -52,17 +60,14 @@ function SlotNumber({ value }: { value: number }) {
         return (
           <span
             key={`d-${i}`}
-            className="relative inline-block h-[1em] w-[0.65em] overflow-hidden align-baseline"
+            className="relative inline-block h-[1em] w-[0.65em] overflow-hidden"
           >
             <span
               className="absolute left-0 top-0 w-full transition-transform duration-500 ease-out will-change-transform"
               style={{ transform: `translateY(-${digit}em)` }}
             >
               {Array.from({ length: 10 }).map((_, n) => (
-                <div
-                  key={n}
-                  className="h-[1em] w-full text-center leading-[1em]"
-                >
+                <div key={n} className="h-[1em] w-full text-center leading-[1em]">
                   {n}
                 </div>
               ))}
@@ -74,6 +79,9 @@ function SlotNumber({ value }: { value: number }) {
   );
 }
 
+/* =======================
+   Carousel UI
+======================= */
 function ArrowButton({
   dir,
   onClick,
@@ -141,11 +149,11 @@ function WindowCarousel<T extends { id: string }>({
 
   const visible = items.slice(start, start + windowSize);
 
-  // ✅ 기본(인터넷/TV) 박스 스타일: 모바일에서만 살짝 작게
-  const baseCard =
-    "rounded-lg border px-3 py-5 sm:py-7 text-left transition min-h-[140px] sm:min-h-[160px]";
-  const baseEmpty =
-    "rounded-lg border border-transparent px-3 py-5 sm:py-7 min-h-[140px] sm:min-h-[160px]";
+  // 기본(인터넷/TV) 카드: “세로 늘리고” + “테두리 진한 회색”
+  const 나머지_카드 =
+    "rounded-lg border border-gray-300 px-3 py-7 text-left transition min-h-[160px]";
+  const 나머지_빈칸 =
+    "rounded-lg border border-transparent px-3 py-7 min-h-[160px]";
 
   return (
     <div className={`relative ${className ?? ""}`}>
@@ -162,8 +170,7 @@ function WindowCarousel<T extends { id: string }>({
         />
       )}
 
-      {/* ✅ 모바일: 1열로 세로 스택 / PC: 3열 유지 */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 py-2">
+      <div className="grid grid-cols-3 gap-3 py-2">
         {visible.map((item) => {
           const active = item.id === selectedId;
           return (
@@ -172,7 +179,7 @@ function WindowCarousel<T extends { id: string }>({
               type="button"
               onClick={() => onSelect(item.id)}
               className={[
-                cardClassName ?? baseCard,
+                cardClassName ?? 나머지_카드,
                 active
                   ? "border-blue-500 bg-blue-50 shadow-sm"
                   : "border-gray-300 bg-white hover:bg-gray-50",
@@ -185,7 +192,7 @@ function WindowCarousel<T extends { id: string }>({
 
         {Array.from({ length: Math.max(0, windowSize - visible.length) }).map(
           (_, i) => (
-            <div key={`empty-${i}`} className={emptyClassName ?? baseEmpty} />
+            <div key={`empty-${i}`} className={emptyClassName ?? 나머지_빈칸} />
           )
         )}
       </div>
@@ -193,7 +200,9 @@ function WindowCarousel<T extends { id: string }>({
   );
 }
 
-/** ✅ 데이터 */
+/* =======================
+   Catalog Data
+======================= */
 const CATALOG: TelcoCatalog[] = [
   {
     telco: "KT",
@@ -245,7 +254,6 @@ const CATALOG: TelcoCatalog[] = [
       { id: "sky_i_100", speedMbps: 100, name: "100M 인터넷", soloPrice: 23100, bundlePrice: 19250 },
       { id: "sky_i_200", speedMbps: 200, name: "기가 200M", soloPrice: 24200, bundlePrice: 20350 },
       { id: "sky_i_500", speedMbps: 500, name: "기가 500M", soloPrice: 29700, bundlePrice: 24750 },
-      // ✅ 스카이라이프 1기가: 단독 35,200원 / TV 결합 30,250원
       { id: "sky_i_1000", speedMbps: 1000, name: "기가 1G", soloPrice: 35200, bundlePrice: 30250 },
     ],
     tv: [
@@ -269,33 +277,14 @@ const CATALOG: TelcoCatalog[] = [
   },
 ];
 
-/* =========================
-   ✅ 사은품 매핑 (총요금에만 표시)
-   ========================= */
-type GiftKey = `${TelcoKey}|${string}|${"SOLO" | "TV"}|${string}`;
-type Gift = { amountMan: number };
+/* =======================
+   Telco Icon Map (public 경로)
+======================= */
 
-function makeGiftKey(
-  telco: TelcoKey,
-  internetId: string | null,
-  includeTv: boolean,
-  tvId: string | null
-): GiftKey | null {
-  if (!internetId) return null;
-  const mode = includeTv ? "TV" : "SOLO";
-  const tvPart = includeTv ? (tvId ?? "NONE") : "NONE";
-  return `${telco}|${internetId}|${mode}|${tvPart}` as GiftKey;
-}
 
-function formatGiftMan(n: number) {
-  return `${n}만원`;
-}
-
-/** ⚠️ GIFTS는 기존 그대로 사용(당신 파일에 이미 들어있던 값 유지) */
-const GIFTS: Partial<Record<GiftKey, Gift>> = {
-  // ... (당신이 이미 넣어둔 GIFTS 그대로)
-};
-
+/* =======================
+   Page
+======================= */
 export default function Internet() {
   const [telco, setTelco] = useState<TelcoKey>("SK");
   const [includeTv, setIncludeTv] = useState(false);
@@ -305,14 +294,20 @@ export default function Internet() {
     [telco]
   );
 
-  const [internetId, setInternetId] = useState<string | null>(null);
-  const [tvId, setTvId] = useState<string | null>(null);
+  // ✅ 첫 렌더 0원/깜빡임 방지: 초기값을 데이터로 설정
+  const initialCatalog = useMemo(
+    () => CATALOG.find((c) => c.telco === "SK") ?? CATALOG[0],
+    []
+  );
 
-  useEffect(() => {
-    setInternetId(catalog.internet[0]?.id ?? null);
-    setTvId(catalog.tv[0]?.id ?? null);
-  }, [catalog]);
+  const [internetId, setInternetId] = useState<string | null>(
+    () => initialCatalog.internet[0]?.id ?? null
+  );
+  const [tvId, setTvId] = useState<string | null>(
+    () => initialCatalog.tv[0]?.id ?? null
+  );
 
+  // ✅ TV 포함 켰는데 tvId 비어있으면 자동 채움
   useEffect(() => {
     if (!includeTv) return;
     if (!tvId && catalog.tv[0]?.id) setTvId(catalog.tv[0].id);
@@ -336,49 +331,56 @@ export default function Internet() {
   const internetDisplayPrice = (p: InternetPlan) =>
     includeTv ? p.bundlePrice : p.soloPrice;
 
-  const giftKey = makeGiftKey(telco, internetId, includeTv, tvId);
-  const gift = giftKey ? GIFTS[giftKey] : undefined;
+  // ✅ 통신사 변경 시 “총요금 구역 새로고침 느낌” 방지
+  const handleSelectTelco = (nextTelco: TelcoKey) => {
+    const nextCatalog = CATALOG.find((c) => c.telco === nextTelco) ?? CATALOG[0];
+    setTelco(nextTelco);
+    setInternetId(nextCatalog.internet[0]?.id ?? null);
+    setTvId(nextCatalog.tv[0]?.id ?? null);
+  };
+
+  // ✅ 신청 버튼: 홈으로 이동
+  const handleApply = () => {
+    window.location.href = "/";
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* ✅ 모바일 패딩 줄이고, PC는 기존 유지 */}
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-5 sm:py-6">
-        <div className="space-y-10 sm:space-y-12">
-          {/* 배너 */}
-          <div className="w-full rounded-xl border border-gray-300 bg-white px-5 sm:px-6 py-5 sm:py-6">
-            <div className="text-base sm:text-lg font-semibold text-gray-900 tracking-[-0.02em]">
-              통신사별 인터넷 · TV 요금을 한눈에 비교해보세요
-            </div>
-          </div>
+      <div className="mx-auto w-full max-w-6xl px-6 py-6">
+        <div className="space-y-12">
+          {/* 배너 (문구 제거 요청 반영) */}
 
           {/* 통신사 */}
-          <section className="flex flex-col sm:flex-row sm:items-start justify-center gap-3 sm:gap-8">
-            <div className="w-full sm:w-[140px] pt-0 sm:pt-2 text-lg sm:text-xl font-bold">
-              통신사
-            </div>
+          <section className="flex items-start justify-center gap-8">
+            <div className="w-[140px] pt-2 text-xl font-bold">통신사</div>
 
-            <div className="w-full max-w-none sm:max-w-[820px] pl-0 sm:pl-5">
-              <WindowCarousel
-                items={CATALOG.map((c) => ({ id: c.telco, label: c.label }))}
-                selectedId={telco}
-                onSelect={(id) => setTelco(id as TelcoKey)}
-                // ✅ 통신사만 작게(모바일은 더 타이트)
-                cardClassName="rounded-lg border px-3 py-3 sm:py-4 text-left transition min-h-[64px] sm:min-h-[72px]"
-                emptyClassName="rounded-lg border border-transparent px-3 py-3 sm:py-4 min-h-[64px] sm:min-h-[72px]"
-                renderCard={(item) => (
-                  <div className="text-base font-extrabold">{item.label}</div>
-                )}
-              />
-            </div>
+<div className="w-full max-w-[820px] pl-5">
+  <WindowCarousel
+    items={CATALOG.map((c) => ({ id: c.telco, label: c.label }))}
+    selectedId={telco}
+    onSelect={(id) => handleSelectTelco(id as TelcoKey)}
+    // 통신사 카드만 세로 작게
+    cardClassName="rounded-lg border border-gray-300 px-3 py-4 text-left transition min-h-[72px]"
+    emptyClassName="rounded-lg border border-transparent px-3 py-4 min-h-[72px]"
+    renderCard={(item) => (
+      <div className="flex h-full w-full items-center justify-center">
+        <span className="text-base font-extrabold tracking-wide">
+          {item.label}
+        </span>
+      </div>
+    )}
+  />
+</div>
+
+
+
           </section>
 
           {/* 인터넷 속도 */}
-          <section className="flex flex-col sm:flex-row sm:items-start justify-center gap-3 sm:gap-8">
-            <div className="w-full sm:w-[140px] pt-0 sm:pt-2 text-lg sm:text-xl font-bold">
-              인터넷 속도
-            </div>
+          <section className="flex items-start justify-center gap-8">
+            <div className="w-[140px] pt-2 text-xl font-bold">인터넷 속도</div>
 
-            <div className="w-full max-w-none sm:max-w-[820px] pl-0 sm:pl-5 space-y-3">
+            <div className="w-full max-w-[820px] pl-5 space-y-3">
               <WindowCarousel
                 key={`internet-${telco}-${includeTv ? "tv" : "solo"}`}
                 items={catalog.internet}
@@ -386,14 +388,15 @@ export default function Internet() {
                 onSelect={setInternetId}
                 renderCard={(p) => (
                   <div className="space-y-3">
-                    {/* ✅ 모바일은 살짝 줄이고, PC는 기존 유지 */}
-                    <div className="text-[28px] sm:text-3xl font-light text-black tracking-[-0.02em]">
+                    <div className="text-[28px] font-light text-black tracking-[-0.02em]">
                       {formatSpeed(p.speedMbps)}
                     </div>
+
                     <div className="text-sm font-medium text-gray-500">
                       {p.name}
                     </div>
-                    <div className="pt-1 text-lg font-normal text-blue-600">
+
+                    <div className="pt-1 text-xl font-normal text-blue-600">
                       월 {formatWon(internetDisplayPrice(p))}
                     </div>
                   </div>
@@ -414,12 +417,10 @@ export default function Internet() {
 
           {/* TV */}
           {includeTv && (
-            <section className="flex flex-col sm:flex-row sm:items-start justify-center gap-3 sm:gap-8">
-              <div className="w-full sm:w-[140px] pt-0 sm:pt-2 text-lg sm:text-xl font-bold">
-                TV 채널
-              </div>
+            <section className="flex items-start justify-center gap-8">
+              <div className="w-[140px] pt-2 text-xl font-bold">TV 채널</div>
 
-              <div className="w-full max-w-none sm:max-w-[820px] pl-0 sm:pl-5">
+              <div className="w-full max-w-[820px] pl-5">
                 <WindowCarousel
                   key={`tv-${telco}`}
                   items={catalog.tv}
@@ -427,13 +428,15 @@ export default function Internet() {
                   onSelect={setTvId}
                   renderCard={(p) => (
                     <div className="space-y-3">
-                      <div className="text-[28px] sm:text-3xl font-light text-black tracking-[-0.02em]">
+                      <div className="text-[28px] font-light text-black tracking-[-0.02em]">
                         {p.channels} 채널
                       </div>
+
                       <div className="text-sm font-medium text-gray-500">
                         {p.name}
                       </div>
-                      <div className="pt-1 text-lg font-normal text-blue-600">
+
+                      <div className="pt-1 text-xl font-normal text-blue-600">
                         월 {formatWon(p.price)}
                       </div>
                     </div>
@@ -444,34 +447,30 @@ export default function Internet() {
           )}
 
           {/* 총 요금 */}
-          <section className="flex flex-col items-center justify-center">
-            <div className="w-full max-w-none sm:max-w-[520px]">
-              <div className="rounded-lg border border-gray-300 bg-white p-5 sm:p-6 text-center">
-                <div className="text-sm font-semibold text-gray-700">총 요금</div>
+          <section className="flex flex-col items-center justify-center gap-4">
+            <div className="w-full max-w-[520px]">
+              <div className="rounded-lg border border-gray-300 bg-white p-6 text-center">
+                <div className="mt-2 flex items-center justify-center gap-1 text-blue-600 tracking-[-0.02em]">
+                  <span className="text-2xl font-semibold leading-none relative top-[-0.06em]">
+                    월
+                  </span>
 
-                {/* ✅ 모바일은 한 단계 줄이고, PC는 기존 */}
-                <div className="mt-2 text-5xl sm:text-6xl font-semibold text-blue-600 tracking-[-0.02em]">
-                  월 <SlotNumber value={total} />원
+                  <span className="text-5xl font-semibold leading-none flex items-center">
+                    <SlotNumber value={total} />
+                  </span>
+
+                  <span className="text-2xl font-semibold leading-none relative top-[-0.06em]">
+                    원
+                  </span>
                 </div>
 
-                {/* ✅ 사은품은 총 요금에만 표시 */}
-                {gift && (
-                  <div className="mt-4 flex items-center justify-center gap-2">
-                    <span className="rounded-full border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700">
-                      사은품
-                    </span>
-                    <span className="text-sm font-semibold text-gray-900">
-                      {formatGiftMan(gift.amountMan)}
-                    </span>
-                  </div>
-                )}
-
-                <div className="mt-5 sm:mt-6">
+                <div className="mt-6">
                   <button
                     type="button"
-                    className="w-full rounded-lg bg-gray-900 py-4 sm:py-5 text-sm font-semibold text-white hover:bg-gray-800 transition"
+                    onClick={handleApply}
+                    className="w-full rounded-lg bg-indigo-600 py-5 text-base font-semibold text-white transition hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.99]"
                   >
-                    상담 신청
+                    비밀 지원금 받기
                   </button>
                 </div>
               </div>

@@ -32,11 +32,14 @@
   font-display: swap;
 }
 
-html, body, #root {
-  height: 100%;
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: 'NanumSquareRound', sans-serif; /* 전체 적용 */
+  overflow-x: hidden;
 }
