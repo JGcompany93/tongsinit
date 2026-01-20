@@ -27,23 +27,52 @@ function Stars5() {
   );
 }
 
+/**
+ * ✅ 변경 포인트(요청사항)
+ * - 모바일(sm 미만): 후기 1개씩 보이도록
+ * - PC(sm 이상): 기존처럼 3개씩 유지
+ *
+ * 구현:
+ * - visible을 반응형으로 계산 (모바일 1 / 그 외 3)
+ * - translatePct와 item width를 visible에 맞춰 계산
+ */
 function ReviewsSlider({ reviews }: { reviews: Review[] }) {
-  const visible = 3;
+  const [visible, setVisible] = useState(3);
   const total = reviews.length;
 
   const [index, setIndex] = useState(0);
   const [noAnim, setNoAnim] = useState(false);
 
+  // ✅ 화면 크기에 따라 visible 변경 (모바일: 1, PC: 3)
+  useEffect(() => {
+    const computeVisible = () => {
+      const isMobile = window.matchMedia("(max-width: 639px)").matches; // Tailwind sm 미만
+      setVisible(isMobile ? 1 : 3);
+    };
+
+    computeVisible();
+    window.addEventListener("resize", computeVisible);
+    return () => window.removeEventListener("resize", computeVisible);
+  }, []);
+
+  // ✅ visible 변경 시 인덱스/애니메이션 안정화
+  useEffect(() => {
+    setNoAnim(true);
+    setIndex(0);
+    const t = window.setTimeout(() => setNoAnim(false), 0);
+    return () => window.clearTimeout(t);
+  }, [visible]);
+
   const items = useMemo(() => {
     if (total === 0) return [];
     return [...reviews, ...reviews.slice(0, Math.min(visible, total))];
-  }, [reviews, total]);
+  }, [reviews, total, visible]);
 
   useEffect(() => {
     if (total <= visible) return;
     const t = window.setInterval(() => setIndex((i) => i + 1), 3200);
     return () => window.clearInterval(t);
-  }, [total]);
+  }, [total, visible]);
 
   useEffect(() => {
     if (total <= visible) return;
@@ -57,7 +86,7 @@ function ReviewsSlider({ reviews }: { reviews: Review[] }) {
       }, 720);
       return () => window.clearTimeout(timer);
     }
-  }, [index, total]);
+  }, [index, total, visible]);
 
   const translatePct = (index * 100) / visible;
 
@@ -83,7 +112,7 @@ function ReviewsSlider({ reviews }: { reviews: Review[] }) {
                 <div className="h-full rounded-[28px] bg-white border border-black/10 shadow-[0_18px_55px_rgba(0,0,0,0.35)] p-8 min-h-[290px] flex flex-col">
                   <div className="flex items-start justify-between gap-5">
                     <Stars5 />
-<span className="shrink-0 rounded-full bg-white text-gray-900 border border-black/15 px-4 py-1.5 text-sm font-extrabold">
+                    <span className="shrink-0 rounded-full bg-white text-gray-900 border border-black/15 px-4 py-1.5 text-sm font-extrabold">
                       {x.moveTo}
                     </span>
                   </div>
