@@ -147,16 +147,25 @@ export default function Header() {
         <div className="mt-1 text-xs text-gray-500 truncate">{user?.email}</div>
       </div>
 
-      <div className="border-t border-gray-100">
-        <button
-          type="button"
-          onClick={signOut}
-          className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50"
-          role="menuitem"
-        >
-          로그아웃
-        </button>
-      </div>
+<div className="border-t border-gray-100">
+  <NavLink
+    to="/profile"
+    onClick={() => setProfileOpen(false)}
+    className="block w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50"
+    role="menuitem"
+  >
+    내 정보
+  </NavLink>
+
+  <button
+    type="button"
+    onClick={signOut}
+    className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50"
+    role="menuitem"
+  >
+    로그아웃
+  </button>
+</div>
     </div>
   );
 
