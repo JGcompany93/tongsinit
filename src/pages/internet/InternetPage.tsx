@@ -199,147 +199,239 @@ export default function InternetPage() {
             </section>
           )}
 
-{/* ▼ 사기 업체 피하는법 (롱폼 가독성 버전) */}
-<section className="pt-6">
+{/* ▼ 사기 업체 피하는법 (롱폼/큰 글씨/가독성 강화) */}
+<section className="pt-8">
   <div className="mx-auto w-full max-w-[820px] pl-4">
     {/* 헤더 */}
-    <div className="flex flex-col items-center gap-3 py-8">
+    <div className="flex flex-col items-center gap-4 py-10">
       <img
         src={scrollDown}
         alt="scroll down"
-        className="h-6 w-6 opacity-50"
+        className="h-8 w-8 opacity-55"
         style={{ filter: "grayscale(1)" }}
         draggable={false}
       />
-      <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900">
-        5분 만에 사기업체 피하는 법
+      <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 text-center">
+        5분 만에 사기업체 피하는법
       </h2>
-      <p className="text-sm sm:text-base text-gray-500 text-center">
-        인터넷·TV 가입, 아래 3가지만 알고 가면
+      <p className="text-base sm:text-lg text-gray-500 text-center leading-relaxed">
+        인터넷·TV 가입은 “조건”을 잘못 잡으면 돈을 더 내고도,
         <br className="hidden sm:block" />
-        쓸데없는 손해는 거의 막을 수 있습니다.
+        사은품까지 못 받는 경우가 생깁니다.
+        <br className="hidden sm:block" />
+        아래 3가지만 체크하면 이상한 곳은 대부분 걸러집니다.
+      </p>
+    </div>
+
+    {/* 인트로 박스 */}
+    <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:p-7">
+      <div className="text-sm sm:text-base font-extrabold text-gray-900">
+        먼저, “사기/먹튀”는 이렇게 시작합니다
+      </div>
+      <ul className="mt-4 space-y-2.5 text-base sm:text-lg text-gray-700 leading-relaxed">
+        <li>• 말도 안 되게 싼 요금으로 관심을 끈다</li>
+        <li>• 사은품을 “나눠서” 준다고 한다</li>
+        <li>• 설치 끝나면 연락이 느려지거나 사라진다</li>
+      </ul>
+      <p className="mt-4 text-base sm:text-lg text-gray-700 leading-relaxed">
+        이 3개가 조합되면 거의 “정석”입니다.  
+        반대로 말하면, 이 3개만 피하면 안전 확률이 급상승합니다.
       </p>
     </div>
 
     {/* STEP 1 */}
-    <div className="space-y-4 py-6">
+    <div className="mt-12 space-y-5">
       <div className="flex items-center gap-3">
-        <span className="rounded-full bg-gray-900 px-3 py-1 text-xs font-bold text-white">
+        <span className="rounded-full bg-gray-900 px-4 py-1.5 text-sm font-extrabold text-white">
           STEP 1
         </span>
-        <h3 className="text-lg font-extrabold text-gray-900">
-          통신사보다 말도 안 되게 싼 요금제를 제안한다
+        <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+          통신사보다 “터무니없이 싼” 요금제로 유혹
         </h3>
       </div>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        “데이터 무제한이 월 2만원대”, “인터넷+TV가 커피값 수준”  
-        이런 제안, 한 번쯤은 보셨을 겁니다.
+      <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
+        예를 들어 이런 말이 나오면 일단 멈추세요.
+        <span className="font-semibold text-gray-900">
+          {" "}
+          “데이터 무제한 월 2만원대”, “인터넷+TV 월 1만원대”
+        </span>
+        처럼요.
+        통신요금은 통신사 정책과 약정 구조가 있어서, 기본 틀을 한 방에 깨는 건 거의 어렵습니다.
       </p>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        하지만 현실적으로 통신 요금은 구조가 정해져 있습니다.
-        통신사가 책정한 기본 요금에서 벗어나
-        갑자기 몇 만 원이 빠지는 건 거의 불가능합니다.
-      </p>
-
-      <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
-        ✔️ 실제로는<br />
-        · 고가 요금제 강제<br />
-        · 카드 발급 조건<br />
-        · 불필요한 부가서비스 유지<br />
-        같은 조건을 뒤에 붙여서 회수하는 경우가 많습니다.
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          이런 식으로 “뒤에서 회수”합니다
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <div className="text-sm font-extrabold text-gray-900">조건 끼워넣기</div>
+            <p className="mt-2 text-base leading-relaxed text-gray-700">
+              고가 요금제 유지, 카드 발급, 부가서비스 몇 개월 유지 같은 조건을 붙여
+              “처음만 싸게” 보이게 만드는 경우가 많습니다.
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <div className="text-sm font-extrabold text-gray-900">해지/위약금 유도</div>
+            <p className="mt-2 text-base leading-relaxed text-gray-700">
+              중간에 바꾸거나 해지하면 위약금이 커지는데,
+              그걸 제대로 안내하지 않거나 “나중에 해결”이라고 얼버무립니다.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <p className="text-sm font-semibold text-gray-900">
-        👉 “싸다”는 말보다,  
-        <span className="text-blue-600"> 정확한 요금표와 유지 조건</span>을 먼저 확인하세요.
-      </p>
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          바로 써먹는 체크 질문 (이거 물어보면 대부분 갈립니다)
+        </div>
+        <ul className="mt-3 space-y-2 text-lg text-gray-700 leading-relaxed">
+          <li>• “월 요금이 정확히 얼마고, 그 요금이 유지되는 조건이 뭐예요?”</li>
+          <li>• “부가서비스/카드/고가 요금제 유지 조건이 있어요?”</li>
+          <li>• “조건 문서로 남겨주세요(캡처/문자/카톡).”</li>
+        </ul>
+      </div>
     </div>
 
     {/* 구분선 */}
-    <div className="my-8 h-px w-full bg-gray-200" />
+    <div className="my-14 h-px w-full bg-gray-200" />
 
     {/* STEP 2 */}
-    <div className="space-y-4 py-6">
+    <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <span className="rounded-full bg-gray-900 px-3 py-1 text-xs font-bold text-white">
+        <span className="rounded-full bg-gray-900 px-4 py-1.5 text-sm font-extrabold text-white">
           STEP 2
         </span>
-        <h3 className="text-lg font-extrabold text-gray-900">
-          사은품을 나눠서 준다고 한다
+        <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+          사은품 “분할 입금 / 몇 달 뒤 지급”은 위험 신호
         </h3>
       </div>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        “개통되면 일부 먼저 드리고,  
-        나머지는 6개월 뒤 / 1년 뒤에 드릴게요.”
+      <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
+        “개통되면 일부 먼저 드리고 나머지는 6개월 뒤”, “1년 유지하면 나머지 지급”
+        이 말이 나오면 거의 대부분 여기서 문제가 시작됩니다.
+        시간이 길어질수록 분쟁은 늘고, 고객은 증빙을 챙기기 어렵습니다.
       </p>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        이 말이 나오면 **위험 신호**입니다.
-        시간이 지나면 담당자가 바뀌거나,
-        업체가 사라지거나,
-        조건을 이유로 지급을 미루는 경우가 정말 많습니다.
-      </p>
-
-      <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
-        ❌ 자주 발생하는 패턴<br />
-        · “담당자가 퇴사했다”<br />
-        · “조건이 바뀌었다”<br />
-        · “다음 달에 처리된다”
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-7">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          분할 지급이 위험한 이유 (현실 버전)
+        </div>
+        <div className="mt-4 space-y-3 text-lg text-gray-700 leading-relaxed">
+          <p>
+            <span className="font-semibold text-gray-900">1)</span> 담당자가 바뀌면 “그런 약속 없었다”가 나오기 쉽습니다.
+          </p>
+          <p>
+            <span className="font-semibold text-gray-900">2)</span> 업체가 광고비·정산 문제로 흔들리면 지급이 늦어지기 시작합니다.
+          </p>
+          <p>
+            <span className="font-semibold text-gray-900">3)</span> 시간이 지나면 고객도 캡처/증빙을 놓치고, 결국 포기하게 됩니다.
+          </p>
+        </div>
       </div>
 
-      <p className="text-sm font-semibold text-gray-900">
-        👉 사은품은  
-        <span className="text-blue-600">개통 확인 후 명확한 시점</span>에
-        지급되는 곳이 안전합니다.
-      </p>
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          안전한 곳은 보통 이렇게 말합니다
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="text-sm font-extrabold text-gray-900">지급 기준이 명확</div>
+            <p className="mt-2 text-base leading-relaxed text-gray-700">
+              “개통 확인 후 ○일 이내 지급”처럼 시점이 분명합니다.
+            </p>
+          </div>
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="text-sm font-extrabold text-gray-900">조건이 문서화</div>
+            <p className="mt-2 text-base leading-relaxed text-gray-700">
+              카톡/문자/안내 페이지로 조건을 남겨 줍니다.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-gray-200 bg-white p-6">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          한 줄 결론
+        </div>
+        <p className="mt-2 text-lg leading-relaxed text-gray-700">
+          사은품을 “나눠서” 준다는 말이 나오면,
+          <span className="font-semibold text-gray-900"> 지급이 아니라 ‘미루는 구조’</span>일 가능성이 큽니다.
+        </p>
+      </div>
     </div>
 
     {/* 구분선 */}
-    <div className="my-8 h-px w-full bg-gray-200" />
+    <div className="my-14 h-px w-full bg-gray-200" />
 
     {/* STEP 3 */}
-    <div className="space-y-4 py-6">
+    <div className="space-y-5">
       <div className="flex items-center gap-3">
-        <span className="rounded-full bg-gray-900 px-3 py-1 text-xs font-bold text-white">
+        <span className="rounded-full bg-gray-900 px-4 py-1.5 text-sm font-extrabold text-white">
           STEP 3
         </span>
-        <h3 className="text-lg font-extrabold text-gray-900">
-          회사 정보가 불분명하고, 연락이 끊긴다
+        <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+          전화/사업자 정보가 부실하고, 설치 후 연락이 느려진다
         </h3>
       </div>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        회사 전화번호가 없거나,
-        카카오톡만 남기고
-        전화를 피하는 경우도 주의해야 합니다.
+      <p className="text-lg sm:text-xl leading-relaxed text-gray-700">
+        정말 많이 나오는 케이스입니다.
+        설치 전에는 답장이 빠르다가, 설치가 끝난 뒤부터 갑자기 “읽씹”, “답변 지연”이 시작됩니다.
+        이때 문제가 생기면 고객은 어디에 연락해야 할지 막막해집니다.
       </p>
 
-      <p className="text-sm leading-relaxed text-gray-700">
-        특히 설치 전에는 친절하다가,
-        설치가 끝난 뒤부터
-        연락이 잘 안 되는 패턴은 매우 흔합니다.
-      </p>
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6 sm:p-7">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          가입 전에 최소 확인 3종 세트
+        </div>
+        <ol className="mt-4 space-y-2 text-lg text-gray-700 leading-relaxed">
+          <li>
+            <span className="font-extrabold text-gray-900">1)</span>{" "}
+            사업자 정보가 사이트에 공개돼 있는가
+          </li>
+          <li>
+            <span className="font-extrabold text-gray-900">2)</span>{" "}
+            유지 조건/환수 기준이 명확히 안내돼 있는가
+          </li>
+          <li>
+            <span className="font-extrabold text-gray-900">3)</span>{" "}
+            문제 생겼을 때 연락 가능한 창구가 있는가
+          </li>
+        </ol>
+      </div>
 
-      <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
-        ✔️ 최소한 이것들은 확인하세요<br />
-        · 사업자 정보 공개 여부<br />
-        · 유지 조건 및 환수 기준<br />
-        · 연락 가능한 창구 존재 여부
+      <div className="rounded-2xl border border-gray-200 bg-white p-6">
+        <div className="text-base sm:text-lg font-extrabold text-gray-900">
+          자주 나오는 “위험 멘트”
+        </div>
+        <div className="mt-3 space-y-2 text-lg text-gray-700 leading-relaxed">
+          <p>• “일단 설치부터 하고 나중에 맞춰드릴게요.”</p>
+          <p>• “그건 다들 그렇게 해요. 걱정 마세요.”</p>
+          <p>• “지금 당장 신청해야 혜택 돼요.”</p>
+        </div>
+        <p className="mt-4 text-lg leading-relaxed text-gray-700">
+          이런 멘트가 나오면,
+          <span className="font-semibold text-gray-900"> 조건을 문서로 남기는지</span>부터 확인하는 게 안전합니다.
+        </p>
       </div>
     </div>
 
     {/* CTA */}
-    <div className="mt-10 flex justify-center">
+    <div className="mt-14 flex justify-center pb-2">
       <button
         onClick={handleApply}
-        className="h-12 w-full max-w-sm rounded-xl bg-gray-900 px-6 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 active:scale-[0.99]"
+        className="h-14 w-full max-w-md rounded-2xl bg-gray-900 px-7 text-base sm:text-lg font-extrabold text-white shadow-sm transition hover:opacity-95 active:scale-[0.99]"
       >
-        조건 확인하고 신청하기
+        신청하기
       </button>
     </div>
+
+    <p className="mt-6 text-center text-sm sm:text-base text-gray-500">
+      신청 전에 조건(요금/유지/환수/지급 시점)만 문서로 남겨두면,
+      불필요한 분쟁이 거의 사라집니다.
+    </p>
   </div>
 </section>
 {/* ▲ 사기 업체 피하는법 */}
