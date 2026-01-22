@@ -3,6 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 
+// ✅ Supabase 세션용
+import type { Session, User } from "@supabase/supabase-js";
+import { supabase } from "../lib/supabase";
+
 // 로고 이미지
 import Logo from "../assets/logo.svg";
 
@@ -11,6 +15,10 @@ type NavLinkArgs = { isActive: boolean };
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  // ✅ 로그인 세션 상태
+  const [session, setSession] = useState<Session | null>(null);
+  const user: User | null = session?.user ?? null;
 
   // ✅ 데스크톱 메뉴: 로고   홈, 인터넷, 휴대폰, 꿀팁모음, 이벤트   로그인
   const items = useMemo(
@@ -30,26 +38,37 @@ export default function Header() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // 모바일 드로어 열렸을 때 스크롤 방지 + ESC 닫기
+  // ✅ 세션 최초 로드 + 로그인/로그아웃 반영
   useEffect(() => {
-    if (!mobileOpen) return;
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session ?? null);
+    });
 
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
 
     return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", onKeyDown);
+      sub.subscription.unsubscribe();
     };
-  }, [mobileOpen]);
+  }, []);
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) alert(error.message);
+  };
 
   const isActivePath = (to: string) =>
     to === "/" ? location.pathname === "/" : location.pathname === to;
+
+  // ✅ 표시용 이름/아바타 (구글은 보통 들어옴)
+  const displayName =
+    (user?.user_metadata?.full_name as string | undefined) ||
+    (user?.user_metadata?.name as string | undefined) ||
+    user?.email ||
+    "사용자";
+
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white">
@@ -103,25 +122,59 @@ export default function Header() {
               })}
             </nav>
 
-            {/* ===== 데스크톱: 우측(로그인) ===== */}
+            {/* ===== 데스크톱: 우측(로그인/프로필) ===== */}
             {/* 간격: pl-16 -> pl-20 */}
             <div className="desktop-only flex items-center justify-start pl-40">
-<NavLink
-  to="/login"
-  className="
-    rounded-xl
-    bg-gray-100
-    px-5 py-2.5
-    text-[15px]
-    font-medium
-    text-gray-700
-    transition
-    hover:bg-gray-200
-  "
->
-  로그인
-</NavLink>
+              {!user ? (
+                <NavLink
+                  to="/login"
+                  className="
+                    rounded-xl
+                    bg-gray-100
+                    px-5 py-2.5
+                    text-[15px]
+                    font-medium
+                    text-gray-700
+                    transition
+                    hover:bg-gray-200
+                  "
+                >
+                  로그인
+                </NavLink>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt="profile"
+                        className="h-9 w-9 rounded-full border object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="h-9 w-9 rounded-full border bg-gray-100 flex items-center justify-center text-xs text-gray-600">
+                        {String(displayName).slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="flex flex-col leading-tight">
+                      <span className="text-[14px] font-medium text-gray-800">
+                        {displayName}
+                      </span>
+                      <span className="text-[12px] text-gray-500">
+                        {user.email}
+                      </span>
+                    </div>
+                  </div>
 
+                  <button
+                    type="button"
+                    onClick={signOut}
+                    className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-[14px] font-medium text-gray-700 transition hover:bg-gray-50"
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* ===== 모바일: 좌측(햄버거) ===== */}
@@ -152,14 +205,37 @@ export default function Header() {
               </NavLink>
             </div>
 
-            {/* ===== 모바일: 우측(로그인) ===== */}
+            {/* ===== 모바일: 우측(로그인/프로필) ===== */}
             <div className="mobile-only flex items-center justify-end">
-              <NavLink
-                to="/login"
-                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-800 transition hover:bg-gray-50"
-              >
-                로그인
-              </NavLink>
+              {!user ? (
+                <NavLink
+                  to="/login"
+                  className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-800 transition hover:bg-gray-50"
+                >
+                  로그인
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-800 hover:bg-gray-50"
+                  aria-label="프로필 메뉴 열기"
+                >
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt="profile"
+                      className="h-6 w-6 rounded-full border object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="h-6 w-6 rounded-full border bg-gray-100 flex items-center justify-center text-[11px] text-gray-600">
+                      {String(displayName).slice(0, 1).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="hidden xs:inline">프로필</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -228,6 +304,38 @@ export default function Header() {
                 </button>
               </div>
 
+              {/* ✅ 로그인 상태 요약(모바일 드로어 상단) */}
+              <div className="border-b px-5 py-4">
+                {!user ? (
+                  <div className="text-sm text-gray-600">
+                    로그인해서 더 빠르게 진행하세요.
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    {avatarUrl ? (
+                      <img
+                        src={avatarUrl}
+                        alt="profile"
+                        className="h-10 w-10 rounded-full border object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="h-10 w-10 rounded-full border bg-gray-100 flex items-center justify-center text-sm text-gray-600">
+                        {String(displayName).slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-bold text-gray-900">
+                        {displayName}
+                      </div>
+                      <div className="truncate text-xs text-gray-500">
+                        {user.email}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* 메뉴 리스트 */}
               <nav className="px-3 py-4">
                 {mobileItems.map((it) => {
@@ -266,13 +374,27 @@ export default function Header() {
                   );
                 })}
 
-                <NavLink
-                  to="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="mt-4 block rounded-xl border border-gray-200 bg-white px-4 py-3 text-center font-bold text-gray-900 hover:bg-gray-50"
-                >
-                  로그인
-                </NavLink>
+                {/* ✅ 드로어 하단: 로그인/로그아웃 버튼 */}
+                {!user ? (
+                  <NavLink
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="mt-4 block rounded-xl border border-gray-200 bg-white px-4 py-3 text-center font-bold text-gray-900 hover:bg-gray-50"
+                  >
+                    로그인
+                  </NavLink>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await signOut();
+                      setMobileOpen(false);
+                    }}
+                    className="mt-4 block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-center font-bold text-gray-900 hover:bg-gray-50"
+                  >
+                    로그아웃
+                  </button>
+                )}
               </nav>
             </aside>
           </div>
