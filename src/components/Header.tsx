@@ -1,3 +1,4 @@
+// src/components/Header.tsx
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
@@ -11,21 +12,19 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
-  // ✅ PC 메뉴는 그대로(인터넷 포함)
+  // ✅ 데스크톱 메뉴: 로고   홈, 인터넷, 휴대폰, 꿀팁모음, 이벤트   로그인
   const items = useMemo(
     () => [
       { label: "홈", to: "/" },
       { label: "인터넷", to: "/internet" },
-      { label: "고객지원", to: "/support" },
+      { label: "휴대폰", to: "/phone" },
+      { label: "꿀팁모음", to: "/tips" },
+      { label: "이벤트", to: "/events" }
     ],
     []
   );
 
-  // ✅ 모바일 드로어에서만 "인터넷" 숨김
-  const mobileItems = useMemo(
-    () => items.filter((it) => it.to !== "/internet"),
-    [items]
-  );
+  const mobileItems = useMemo(() => items, [items]);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -54,36 +53,25 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid h-[72px] grid-cols-[1fr_auto_1fr] items-center">
-          {/* 좌측 */}
-          <div className="flex items-center justify-start">
-            {/* PC 로고 */}
-            <div className="hidden lg:flex items-center">
+      {/* 데스크톱 고정폭 정책: 화면을 줄여도 요소가 작아지지 않게 */}
+      <div className="min-w-[1200px]">
+        <div className="mx-auto max-w-6xl px-6">
+          {/* 메뉴 가운데 + 좌/우(로고/로그인)를 가운데로 몰기 */}
+          <div className="grid h-[72px] grid-cols-[1fr_auto_1fr] items-center">
+            {/* ===== 데스크톱: 좌측(로고) ===== */}
+            {/* 간격: pr-16 -> pr-20 */}
+            <div className="desktop-only flex items-center justify-end pr-40">
               <NavLink to="/" className="flex items-center">
-                <img src={Logo} alt="로고" className="h-11 w-auto object-contain" />
+                <img
+                  src={Logo}
+                  alt="로고"
+                  className="h-11 w-auto object-contain"
+                />
               </NavLink>
             </div>
 
-            {/* 모바일 햄버거 */}
-            <button
-              className="lg:hidden inline-flex items-center justify-center p-2"
-              onClick={() => setMobileOpen(true)}
-              aria-label="메뉴 열기"
-              aria-expanded={mobileOpen}
-            >
-              <span className="relative block h-6 w-6">
-                <span className="absolute left-0 top-[6px] h-[2px] w-6 rounded-full bg-gray-500" />
-                <span className="absolute left-0 top-[12px] h-[2px] w-6 rounded-full bg-gray-500" />
-                <span className="absolute left-0 top-[18px] h-[2px] w-6 rounded-full bg-gray-500" />
-              </span>
-            </button>
-          </div>
-
-          {/* 중앙 */}
-          <div className="flex items-center justify-center">
-            {/* PC 메뉴 */}
-            <nav className="hidden lg:flex items-center whitespace-nowrap">
+            {/* ===== 데스크톱: 중앙(메뉴) ===== */}
+            <nav className="desktop-only flex items-center justify-center whitespace-nowrap">
               {items.map((it) => {
                 const active = isActivePath(it.to);
                 return (
@@ -97,7 +85,7 @@ export default function Header() {
                         "text-[18px] font-semibold tracking-[-0.015em]",
                         isActive || active
                           ? "text-blue-600"
-                          : "text-gray-500 hover:text-blue-600",
+                          : "text-gray-500 hover:text-blue-600"
                       ].join(" ")
                     }
                   >
@@ -107,7 +95,7 @@ export default function Header() {
                         "pointer-events-none absolute left-1/2 top-[42px] h-[2px] -translate-x-1/2 rounded-full bg-blue-600 transition-all duration-300",
                         active
                           ? "w-10 opacity-100"
-                          : "w-0 opacity-0 group-hover:w-10 group-hover:opacity-100",
+                          : "w-0 opacity-0 group-hover:w-10 group-hover:opacity-100"
                       ].join(" ")}
                     />
                   </NavLink>
@@ -115,27 +103,74 @@ export default function Header() {
               })}
             </nav>
 
-            {/* 모바일 중앙 로고 */}
-            <NavLink to="/" className="lg:hidden flex items-center">
-              <img src={Logo} alt="로고" className="h-10 w-auto object-contain" />
-            </NavLink>
-          </div>
+            {/* ===== 데스크톱: 우측(로그인) ===== */}
+            {/* 간격: pl-16 -> pl-20 */}
+            <div className="desktop-only flex items-center justify-start pl-40">
+<NavLink
+  to="/login"
+  className="
+    rounded-xl
+    bg-gray-100
+    px-5 py-2.5
+    text-[15px]
+    font-medium
+    text-gray-700
+    transition
+    hover:bg-gray-200
+  "
+>
+  로그인
+</NavLink>
 
-          {/* 우측 */}
-          <div className="flex items-center justify-end">
-            <span className="hidden lg:block text-[20px] font-semibold text-gray-700 tracking-wide">
-              1111-2222
-            </span>
+            </div>
+
+            {/* ===== 모바일: 좌측(햄버거) ===== */}
+            <div className="mobile-only flex items-center justify-start">
+              <button
+                className="inline-flex items-center justify-center p-2"
+                onClick={() => setMobileOpen(true)}
+                aria-label="메뉴 열기"
+                aria-expanded={mobileOpen}
+                type="button"
+              >
+                <span className="relative block h-6 w-6">
+                  <span className="absolute left-0 top-[6px] h-[2px] w-6 rounded-full bg-gray-500" />
+                  <span className="absolute left-0 top-[12px] h-[2px] w-6 rounded-full bg-gray-500" />
+                  <span className="absolute left-0 top-[18px] h-[2px] w-6 rounded-full bg-gray-500" />
+                </span>
+              </button>
+            </div>
+
+            {/* ===== 모바일: 중앙(로고) ===== */}
+            <div className="mobile-only flex items-center justify-center">
+              <NavLink to="/" className="flex items-center">
+                <img
+                  src={Logo}
+                  alt="로고"
+                  className="h-10 w-auto object-contain"
+                />
+              </NavLink>
+            </div>
+
+            {/* ===== 모바일: 우측(로그인) ===== */}
+            <div className="mobile-only flex items-center justify-end">
+              <NavLink
+                to="/login"
+                className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-800 transition hover:bg-gray-50"
+              >
+                로그인
+              </NavLink>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 모바일 드로어 */}
+      {/* ===== 모바일 드로어 ===== */}
       {createPortal(
         <div
           className={[
-            "lg:hidden fixed inset-0 z-[9999]",
-            mobileOpen ? "pointer-events-auto" : "pointer-events-none",
+            "mobile-only fixed inset-0 z-[9999]",
+            mobileOpen ? "pointer-events-auto" : "pointer-events-none"
           ].join(" ")}
           aria-hidden={!mobileOpen}
         >
@@ -144,7 +179,7 @@ export default function Header() {
             <div
               className={[
                 "absolute inset-0 bg-gray-900/60 transition-opacity duration-300",
-                mobileOpen ? "opacity-100" : "opacity-0",
+                mobileOpen ? "opacity-100" : "opacity-0"
               ].join(" ")}
               onClick={() => setMobileOpen(false)}
             />
@@ -153,7 +188,7 @@ export default function Header() {
             <aside
               className={[
                 "absolute left-0 top-0 h-full w-[78vw] max-w-[320px] bg-white shadow-xl transition-transform duration-300 ease-out",
-                mobileOpen ? "translate-x-0" : "-translate-x-full",
+                mobileOpen ? "translate-x-0" : "-translate-x-full"
               ].join(" ")}
               role="dialog"
               aria-label="모바일 메뉴"
@@ -165,7 +200,11 @@ export default function Header() {
                   className="flex items-center"
                   onClick={() => setMobileOpen(false)}
                 >
-                  <img src={Logo} alt="로고" className="h-9 w-auto object-contain" />
+                  <img
+                    src={Logo}
+                    alt="로고"
+                    className="h-9 w-auto object-contain"
+                  />
                 </NavLink>
 
                 <button
@@ -189,7 +228,7 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* ✅ 모바일 메뉴 리스트 (인터넷 제외) */}
+              {/* 메뉴 리스트 */}
               <nav className="px-3 py-4">
                 {mobileItems.map((it) => {
                   const active = isActivePath(it.to);
@@ -204,7 +243,7 @@ export default function Header() {
                           "flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold transition",
                           isActive || active
                             ? "bg-blue-50 text-blue-700"
-                            : "text-gray-900 hover:bg-gray-50",
+                            : "text-gray-900 hover:bg-gray-50"
                         ].join(" ")
                       }
                     >
@@ -213,7 +252,7 @@ export default function Header() {
                         viewBox="0 0 24 24"
                         className={[
                           "h-5 w-5",
-                          active ? "text-blue-600" : "text-gray-400",
+                          active ? "text-blue-600" : "text-gray-400"
                         ].join(" ")}
                         fill="none"
                         stroke="currentColor"
@@ -227,12 +266,13 @@ export default function Header() {
                   );
                 })}
 
-                <div className="mt-4 px-4 py-3 rounded-xl bg-gray-50 border border-gray-200">
-                  <div className="text-xs font-semibold text-gray-500">고객센터</div>
-                  <div className="mt-1 text-lg font-extrabold text-gray-900">
-                    1111-2222
-                  </div>
-                </div>
+                <NavLink
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-4 block rounded-xl border border-gray-200 bg-white px-4 py-3 text-center font-bold text-gray-900 hover:bg-gray-50"
+                >
+                  로그인
+                </NavLink>
               </nav>
             </aside>
           </div>

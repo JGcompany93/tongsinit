@@ -1,21 +1,28 @@
+// src/App.tsx
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
-import Internet from "./pages/Internet";
+import Internet from "./pages/internet";
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 
+import FullscreenGuard from "./components/FullscreenGuard";
+
 export default function App() {
   return (
-    <Routes>
-      {/* 공통 레이아웃 (Header / Footer 포함) */}
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/internet" element={<Internet />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <>
+      {/* PC에서 창이 화면 대비 너무 작아지면 "전체화면에서만 이용" 오버레이 */}
+      <FullscreenGuard minRatio={0.9} pcOnly />
+
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/internet" element={<Internet />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </>
   );
 }

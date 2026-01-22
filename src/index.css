@@ -4,32 +4,40 @@
 
 /* 폰트 등록 */
 @font-face {
-  font-family: 'NanumSquareRound';
-  src: url('/fonts/NanumSquareRoundL.woff2') format('woff2');
+  font-family: "NanumSquareRound";
+  src: url("/fonts/NanumSquareRoundL.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'NanumSquareRound';
-  src: url('/fonts/NanumSquareRoundR.woff2') format('woff2');
+  font-family: "NanumSquareRound";
+  src: url("/fonts/NanumSquareRoundR.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'NanumSquareRound';
-  src: url('/fonts/NanumSquareRoundB.woff2') format('woff2');
+  font-family: "NanumSquareRound";
+  src: url("/fonts/NanumSquareRoundB.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'NanumSquareRound';
-  src: url('/fonts/NanumSquareRoundEB.woff2') format('woff2');
+  font-family: "NanumSquareRound";
+  src: url("/fonts/NanumSquareRoundEB.woff2") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: "NanumSquareRound", sans-serif;
+    /* 스크롤바가 생기고 사라져도 레이아웃이 흔들리지 않게 */
+    scrollbar-gutter: stable;
+  }
 }
 
 html,
@@ -40,6 +48,24 @@ body,
   width: 100%;
 }
 
+/* 세로 스크롤바 자리 항상 확보 (중앙 흔들림 방지) */
 body {
-  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* 화면 폭이 아니라 입력장치 기준으로 헤더 전환 */
+.desktop-only {
+  display: flex;
+}
+.mobile-only {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: flex;
+  }
 }
