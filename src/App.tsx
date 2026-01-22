@@ -6,6 +6,9 @@ import Home from "./pages/Home";
 import Internet from "./pages/internet";
 import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/AuthCallback";
+import Login from "./pages/Login";
+
 
 import FullscreenGuard from "./components/FullscreenGuard";
 
@@ -20,6 +23,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/internet" element={<Internet />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
