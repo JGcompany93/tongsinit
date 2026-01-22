@@ -8,7 +8,7 @@ import Support from "./pages/Support";
 import NotFound from "./pages/NotFound";
 import AuthCallback from "./pages/AuthCallback";
 import Login from "./pages/Login";
-
+import Profile from "./pages/Profile";
 
 import FullscreenGuard from "./components/FullscreenGuard";
 
@@ -26,6 +26,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </>
