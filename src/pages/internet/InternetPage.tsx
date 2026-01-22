@@ -1,4 +1,4 @@
-// src\pages\internet\InternetPage.tsx
+// src/pages/internet/InternetPage.tsx
 import { useEffect, useMemo, useState } from "react";
 import BottomPriceBar from "./components/BottomPriceBar";
 import WindowCarousel from "./components/WindowCarousel";
@@ -12,6 +12,9 @@ import skLogo from "../../assets/telco-sk.svg";
 import lguLogo from "../../assets/telco-lgu.jpg";
 import skylifeLogo from "../../assets/telco-skylife.jpeg";
 import helloLogo from "../../assets/telco-hello.svg";
+
+// ✅ 스크롤 다운 아이콘
+import scrollDown from "../../assets/scroll-down.svg";
 
 const TELCO_LOGO: Record<TelcoKey, string> = {
   KT: ktLogo,
@@ -73,6 +76,7 @@ export default function InternetPage() {
   };
 
   const handleApply = () => {
+    // TODO: 실제 신청 플로우로 연결 (예: /apply, /quote, 카카오 상담 링크 등)
     window.location.href = "/";
   };
 
@@ -135,7 +139,6 @@ export default function InternetPage() {
                 onSelect={setInternetId}
                 cardClassName="rounded-xl border border-gray-300 px-4 py-5 transition data-[selected=true]:border-gray-800"
                 renderCard={(p) => (
-                  // ✅ 왼쪽 정렬
                   <div className="space-y-2.5 text-left">
                     <div className="text-[22px] sm:text-[24px] font-semibold text-black tracking-[-0.02em]">
                       {formatSpeed(p.speedMbps)}
@@ -177,7 +180,6 @@ export default function InternetPage() {
                   onSelect={setTvId}
                   cardClassName="rounded-xl border border-gray-300 px-4 py-5 transition data-[selected=true]:border-gray-800"
                   renderCard={(p) => (
-                    // ✅ 왼쪽 정렬
                     <div className="space-y-2.5 text-left">
                       <div className="text-[22px] sm:text-[24px] font-semibold text-black tracking-[-0.02em]">
                         {p.channels} 채널
@@ -196,6 +198,103 @@ export default function InternetPage() {
               </div>
             </section>
           )}
+
+          {/* ▼ 사기 업체 피하는법 섹션 */}
+          <section className="pt-2">
+            <div className="mx-auto w-full max-w-[820px] pl-4">
+              <div className="flex flex-col items-center justify-center gap-3 py-6">
+                <img
+                  src={scrollDown}
+                  alt="scroll down"
+                  className="h-6 w-6 opacity-60"
+                  style={{ filter: "grayscale(1)" }}
+                  draggable={false}
+                  loading="lazy"
+                />
+                <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900">
+                  5분 만에 사기업체 피하는법
+                </h2>
+                <p className="text-sm text-gray-500">
+                  아래 3가지만 체크해도 “낚시 업체” 확률이 확 줄어듭니다.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                {/* 1 */}
+                <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="text-sm font-extrabold text-gray-900">
+                        1) 통신사보다 “터무니없이 싼” 요금제로 유혹
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                        “데이터 무제한이 월 2만원대”, “인터넷+TV가 커피값” 같은
+                        문구가 나오면 일단 멈추세요. 통신 요금은 구조상 한 방에
+                        그렇게 떨어지기 어렵고, 보통은 조건(고가 요금제 강제,
+                        부가서비스, 카드, 위약금 대납 등)으로 뒤에서 회수합니다.
+                        싸게 보이는 말보다 <span className="font-semibold">조건표</span>를 먼저 요구하는 게 정답입니다.
+                      </p>
+                    </div>
+                    <div className="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-bold text-gray-700">
+                      CHECK
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2 */}
+                <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="text-sm font-extrabold text-gray-900">
+                        2) 사은품 “분할 입금 / 6개월·1년 뒤 지급” 제안
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                        “개통되면 일부만 먼저, 나머지는 6개월 후/1년 후” 같은
+                        분할 지급은 대표적인 위험 신호입니다. 시간이 지나면
+                        담당자가 바뀌거나, 업체가 사라지거나, 조건을 뒤집는 경우가
+                        자주 발생합니다. <span className="font-semibold">사은품은 개통 확인 후 일정(예: 당일~수일 내)</span>처럼
+                        명확한 기준이 있는 곳이 안전합니다.
+                      </p>
+                    </div>
+                    <div className="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-bold text-gray-700">
+                      위험
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3 */}
+                <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <div className="text-sm font-extrabold text-gray-900">
+                        3) 회사 전화/사업자 정보가 부실하고, 갑자기 연락 두절
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                        고객센터 번호가 없거나, 카톡만 남기고 전화 연결을 피하거나,
+                        설치 전후로 “담당자가 잠수” 타면 리스크가 큽니다.
+                        특히 “먼저 전화로 바꾸라고 유도”하면서 급하게 진행을
+                        재촉하는 패턴도 흔합니다. 최소한 <span className="font-semibold">사업자 정보, 안내 조건, 환수/유지 조건</span>을
+                        문서로 남기는 곳을 선택하세요.
+                      </p>
+                    </div>
+                    <div className="shrink-0 rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-bold text-gray-700">
+                      필수
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <button
+                  onClick={handleApply}
+                  className="h-12 w-full max-w-sm rounded-xl bg-gray-900 px-6 text-sm font-semibold text-white shadow-sm transition hover:opacity-95 active:scale-[0.99]"
+                >
+                  신청하기
+                </button>
+              </div>
+            </div>
+          </section>
+          {/* ▲ 사기 업체 피하는법 섹션 */}
         </div>
       </div>
 
