@@ -1,5 +1,5 @@
 // src/components/Header.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 
@@ -22,7 +22,6 @@ export default function Header() {
 
   // ✅ 프로필 드롭다운 상태 (데스크톱/모바일 공용)
   const [profileOpen, setProfileOpen] = useState(false);
-  const profileWrapRef = useRef<HTMLDivElement | null>(null);
 
   // ✅ 데스크톱 메뉴
   const items = useMemo(
@@ -76,16 +75,22 @@ export default function Header() {
     };
   }, []);
 
-  // ✅ 바깥 클릭 시 프로필 드롭다운 닫기
+  // ✅ 바깥 클릭 시 프로필 드롭다운 닫기 (ref 충돌 방지: closest 사용)
   useEffect(() => {
-    const onDown = (e: MouseEvent) => {
-      if (!profileOpen) return;
-      if (!profileWrapRef.current) return;
-      if (profileWrapRef.current.contains(e.target as Node)) return;
+    if (!profileOpen) return;
+
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // 프로필 영역(버튼+드롭다운) 내부 클릭이면 유지
+      if (target.closest('[data-profile-root="true"]')) return;
+
       setProfileOpen(false);
     };
-    document.addEventListener("mousedown", onDown);
-    return () => document.removeEventListener("mousedown", onDown);
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [profileOpen]);
 
   const signOut = async () => {
@@ -130,7 +135,7 @@ export default function Header() {
     </button>
   );
 
-  // ✅ 프로필 드롭다운(공용) - "내 정보" 추가
+  // ✅ 프로필 드롭다운(공용) - "내 정보" + "로그아웃"
   const ProfileDropdown = ({ align }: { align: "right" | "left" }) => (
     <div
       className={[
@@ -150,7 +155,10 @@ export default function Header() {
       <div className="border-t border-gray-100">
         <NavLink
           to="/profile"
-          onClick={() => setProfileOpen(false)}
+          onClick={() => {
+            setProfileOpen(false);
+            setMobileOpen(false);
+          }}
           className="block w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50"
           role="menuitem"
         >
@@ -234,7 +242,7 @@ export default function Header() {
                   로그인
                 </NavLink>
               ) : (
-                <div ref={profileWrapRef} className="relative">
+                <div data-profile-root="true" className="relative">
                   {/* ✅ 헤더엔 원형 프로필만 */}
                   <ProfileButton className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:bg-gray-50 hover:ring-2 hover:ring-gray-200" />
                   {profileOpen && <ProfileDropdown align="right" />}
@@ -276,7 +284,7 @@ export default function Header() {
                   로그인
                 </NavLink>
               ) : (
-                <div ref={profileWrapRef} className="relative">
+                <div data-profile-root="true" className="relative">
                   {/* ✅ 모바일도 원형 프로필만 */}
                   <ProfileButton className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:bg-gray-50" />
                   {profileOpen && <ProfileDropdown align="right" />}
@@ -370,9 +378,7 @@ export default function Header() {
                       <div className="truncate text-sm font-bold text-gray-900">
                         {displayName}
                       </div>
-                      <div className="truncate text-xs text-gray-500">
-                        {user.email}
-                      </div>
+                      <div className="truncate text-xs text-gray-500">{user.email}</div>
                     </div>
                   </div>
                 )}
@@ -443,4 +449,3 @@ export default function Header() {
     </header>
   );
 }
-``
