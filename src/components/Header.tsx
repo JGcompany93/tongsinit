@@ -44,9 +44,11 @@ export default function Header() {
       setSession(data.session ?? null);
     });
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-    });
+    const { data: sub } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        setSession(newSession);
+      }
+    );
 
     return () => {
       sub.subscription.unsubscribe();
@@ -78,7 +80,6 @@ export default function Header() {
           {/* 메뉴 가운데 + 좌/우(로고/로그인)를 가운데로 몰기 */}
           <div className="grid h-[72px] grid-cols-[1fr_auto_1fr] items-center">
             {/* ===== 데스크톱: 좌측(로고) ===== */}
-            {/* 간격: pr-16 -> pr-20 */}
             <div className="desktop-only flex items-center justify-end pr-40">
               <NavLink to="/" className="flex items-center">
                 <img
@@ -123,7 +124,6 @@ export default function Header() {
             </nav>
 
             {/* ===== 데스크톱: 우측(로그인/프로필) ===== */}
-            {/* 간격: pl-16 -> pl-20 */}
             <div className="desktop-only flex items-center justify-start pl-40">
               {!user ? (
                 <NavLink
