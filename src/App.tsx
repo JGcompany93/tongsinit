@@ -1,5 +1,7 @@
 // src/App.tsx
 import { Route, Routes } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
@@ -15,10 +17,23 @@ import Privacy from "./pages/Privacy";
 import FullscreenGuard from "./components/FullscreenGuard";
 
 export default function App() {
+  // ✅ 모바일에서는 FullscreenGuard 자체를 렌더하지 않도록 차단
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      // 모바일/태블릿 폭에서는 가드 비활성화
+      setIsMobile(window.matchMedia("(max-width: 1023px)").matches);
+    };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <>
       {/* PC에서 창이 화면 대비 너무 작아지면 "전체화면에서만 이용" 오버레이 */}
-      <FullscreenGuard minRatio={0.9} pcOnly />
+      {!isMobile && <FullscreenGuard minRatio={0.9} pcOnly />}
 
       <Routes>
         <Route element={<Layout />}>
@@ -27,10 +42,10 @@ export default function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/login" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>
