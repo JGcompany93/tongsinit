@@ -104,13 +104,18 @@ export default function InternetPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <div className="mx-auto w-full max-w-6xl px-5 py-5 pb-[108px]">
+      {/* ✅ 모바일 하단바 높이 여유 + 모바일 패딩 정리 */}
+      <div className="mx-auto w-full max-w-6xl px-4 lg:px-5 py-5 pb-[140px] lg:pb-[108px]">
         <div className="space-y-10">
           {/* 통신사 */}
-          <section className="flex items-start justify-center gap-6">
-            <div className="w-[120px] pt-2 text-lg font-bold">통신사</div>
+          <section className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-center lg:gap-6">
+            {/* ✅ 모바일: 라벨을 위로 올려서 공간 확보 */}
+            <div className="w-full lg:w-[120px] lg:pt-2 text-lg font-bold">
+              통신사
+            </div>
 
-            <div className="w-full max-w-[820px] pl-4">
+            {/* ✅ 모바일: pl 제거(좁아지는 원인), PC에서만 기존 pl/max-w 유지 */}
+            <div className="w-full lg:max-w-[820px] lg:pl-4">
               <WindowCarousel
                 items={CATALOG.map((c) => ({ id: c.telco, label: c.label }))}
                 selectedId={telco}
@@ -119,7 +124,9 @@ export default function InternetPage() {
                 emptyClassName="rounded-xl border border-transparent px-4 py-5 min-h-[108px]"
                 renderCard={(item) => {
                   const isSmallerLogo =
-                    item.id === "LGU+" || item.id === "HELLO" || item.id === "SKYLIFE";
+                    item.id === "LGU+" ||
+                    item.id === "HELLO" ||
+                    item.id === "SKYLIFE";
 
                   return (
                     <div className="flex h-full w-full flex-col items-center justify-center gap-3">
@@ -148,10 +155,12 @@ export default function InternetPage() {
           </section>
 
           {/* 인터넷 속도 */}
-          <section className="flex items-start justify-center gap-6">
-            <div className="w-[120px] pt-2 text-lg font-bold">인터넷 속도</div>
+          <section className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-center lg:gap-6">
+            <div className="w-full lg:w-[120px] lg:pt-2 text-lg font-bold">
+              인터넷 속도
+            </div>
 
-            <div className="w-full max-w-[820px] pl-4 space-y-2.5">
+            <div className="w-full lg:max-w-[820px] lg:pl-4 space-y-2.5">
               <WindowCarousel
                 key={`internet-${telco}-${includeTv ? "tv" : "solo"}`}
                 items={catalog.internet}
@@ -175,6 +184,7 @@ export default function InternetPage() {
                 )}
               />
 
+              {/* ✅ 모바일에서 체크박스가 너무 가운데로 떠 보이지 않게 */}
               <label className="inline-flex items-center gap-2 text-sm text-gray-800">
                 <input
                   type="checkbox"
@@ -189,10 +199,12 @@ export default function InternetPage() {
 
           {/* TV */}
           {includeTv && (
-            <section className="flex items-start justify-center gap-6">
-              <div className="w-[120px] pt-2 text-lg font-bold">TV 채널</div>
+            <section className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-center lg:gap-6">
+              <div className="w-full lg:w-[120px] lg:pt-2 text-lg font-bold">
+                TV 채널
+              </div>
 
-              <div className="w-full max-w-[820px] pl-4">
+              <div className="w-full lg:max-w-[820px] lg:pl-4">
                 <WindowCarousel
                   key={`tv-${telco}`}
                   items={catalog.tv}
@@ -219,7 +231,7 @@ export default function InternetPage() {
             </section>
           )}
 
-          {/* ✅ 5분만에 사기업체 피하는법 (복구 / 짧게 1,2,3) */}
+          {/* ✅ 5분만에 사기업체 피하는법 */}
           <section className="pt-6">
             <div className="flex flex-col items-center text-center gap-3 py-6">
               <img
@@ -249,8 +261,11 @@ export default function InternetPage() {
                 <p className="mt-3 text-base sm:text-lg leading-relaxed text-gray-700">
                   “월 1만원대”, “무제한 2만원대”처럼 과하게 낮은 가격이면,
                   카드/부가서비스/할인기간 같은 조건이 붙는 경우가 많습니다.
-                  조건 포함한 <span className="font-semibold text-gray-900">확정 월요금</span>을
-                  캡처로 먼저 받으세요.
+                  조건 포함한{" "}
+                  <span className="font-semibold text-gray-900">
+                    확정 월요금
+                  </span>
+                  을 캡처로 먼저 받으세요.
                 </p>
               </div>
 
@@ -263,8 +278,11 @@ export default function InternetPage() {
                 </div>
                 <p className="mt-3 text-base sm:text-lg leading-relaxed text-gray-700">
                   “6개월 뒤”, “1년 뒤”, “정산 끝나면”은 위험 신호입니다.
-                  사은품은 <span className="font-semibold text-gray-900">개통 확인 후 ○일 이내</span>처럼
-                  날짜 기준으로 문구를 남겨야 안전합니다.
+                  사은품은{" "}
+                  <span className="font-semibold text-gray-900">
+                    개통 확인 후 ○일 이내
+                  </span>
+                  처럼 날짜 기준으로 문구를 남겨야 안전합니다.
                 </p>
               </div>
 
@@ -276,8 +294,11 @@ export default function InternetPage() {
                   </div>
                 </div>
                 <p className="mt-3 text-base sm:text-lg leading-relaxed text-gray-700">
-                  “전화로만 안내”, “나중에 정리”처럼 증빙을 피하는 곳은 주의하세요.
-                  가입 전 안내 내용을 <span className="font-semibold text-gray-900">문자/카톡 캡처로 남길 수 있는지</span>
+                  “전화로만 안내”, “나중에 정리”처럼 증빙을 피하는 곳은
+                  주의하세요. 가입 전 안내 내용을{" "}
+                  <span className="font-semibold text-gray-900">
+                    문자/카톡 캡처로 남길 수 있는지
+                  </span>
                   먼저 확인하면 분쟁을 크게 줄일 수 있습니다.
                 </p>
               </div>
