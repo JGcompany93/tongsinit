@@ -1,3 +1,4 @@
+// src/pages/internet/components/BottomPriceBar.tsx
 import SlotNumber from "./SlotNumber";
 import { formatSpeed } from "../utils";
 import type { InternetPlan, TvPlan, TelcoKey } from "../types";
@@ -38,30 +39,28 @@ export default function BottomPriceBar({
     : "";
   const tvName = tvSelected?.name ?? "";
 
-  const productText = [
-    internetSpeed || undefined,
-    includeTv ? tvName || undefined : undefined,
-  ]
+  const productText = [internetSpeed || undefined, includeTv ? tvName || undefined : undefined]
     .filter(Boolean)
     .join(" + ");
 
   return (
     <>
-      {/* ✅ 1) 화면 전체 채우는 "고정 바" (이게 기준점) */}
+      {/* ✅ 1) 화면 전체 채우는 "고정 바" */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75">
-        {/* 높이 확보(카드가 올라와도 뒤 배경이 안정적으로 받쳐줌) */}
-        <div className="h-[92px]" />
+        {/* ✅ 모바일은 카드/텍스트가 더 높게 느껴져서 배경 높이 여유 */}
+        <div className="h-[108px] lg:h-[92px]" />
       </div>
 
-      {/* ✅ 2) 카드: 화면(뷰포트) 기준으로 좌표 고정 → 절대 안 흔들리게 */}
-      <div className="fixed bottom-4 left-[50vw] z-50 -translate-x-1/2">
-        {/* 폭은 기존 느낌 유지(고정) */}
-        <div className="w-[860px] rounded-2xl border border-gray-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
-          <div className="px-6 py-4">
-            <div className="grid items-center gap-3 [grid-template-columns:140px_minmax(0,1fr)_auto]">
+      {/* ✅ 2) 카드 */}
+      <div className="fixed bottom-3 lg:bottom-4 left-1/2 z-50 -translate-x-1/2">
+        {/* ✅ 모바일: 화면 폭에 맞추고, PC: 기존 860px 유지 */}
+        <div className="w-[calc(100vw-24px)] max-w-[860px] rounded-2xl border border-gray-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.10)]">
+          <div className="px-4 lg:px-6 py-3 lg:py-4">
+            {/* ✅ 모바일: 세로 스택 / PC: 기존 3컬럼 */}
+            <div className="grid gap-3 lg:items-center lg:gap-3 lg:[grid-template-columns:140px_minmax(0,1fr)_auto]">
               {/* 1) 로고 */}
               <div className="shrink-0">
-                <div className="flex items-center h-[44px] w-[140px]">
+                <div className="flex items-center h-[36px] lg:h-[44px] w-[120px] lg:w-[140px]">
                   <img
                     src={TELCO_LOGO[telco]}
                     alt={telco}
@@ -73,28 +72,29 @@ export default function BottomPriceBar({
               </div>
 
               {/* 2) 상품 | 요금 */}
-              <div className="min-w-0 pl-4">
-                <div className="flex items-center gap-8 min-w-0">
+              <div className="min-w-0 lg:pl-4">
+                {/* ✅ 모바일: 상품/요금을 같은 줄에 배치, 좁으면 자연스럽게 내려가게 */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 min-w-0">
                   {/* 상품명 */}
                   <div className="min-w-0 flex-1">
-                    <div className="truncate whitespace-nowrap text-lg font-semibold text-gray-900">
+                    <div className="truncate whitespace-nowrap text-[15px] lg:text-lg font-semibold text-gray-900">
                       {productText || "상품 선택"}
                     </div>
                   </div>
 
-                  {/* 구분선 */}
-                  <span className="h-5 w-px bg-gray-300 shrink-0" />
+                  {/* ✅ PC에서만 구분선 */}
+                  <span className="hidden lg:block h-5 w-px bg-gray-300 shrink-0" />
 
                   {/* 요금 */}
                   <div className="shrink-0">
-                    <div className="flex items-baseline gap-2 whitespace-nowrap text-blue-600">
-                      <span className="text-base font-semibold leading-none">
+                    <div className="flex items-baseline gap-1.5 whitespace-nowrap text-blue-600">
+                      <span className="text-sm lg:text-base font-semibold leading-none">
                         월
                       </span>
-                      <span className="text-4xl font-semibold leading-none tabular-nums">
+                      <span className="text-[30px] lg:text-4xl font-semibold leading-none tabular-nums">
                         <SlotNumber value={total} />
                       </span>
-                      <span className="text-base font-semibold leading-none">
+                      <span className="text-sm lg:text-base font-semibold leading-none">
                         원
                       </span>
                     </div>
@@ -108,10 +108,10 @@ export default function BottomPriceBar({
                   type="button"
                   onClick={onApply}
                   className="
-                    h-12 min-w-[132px]
+                    h-11 lg:h-12 w-full lg:w-auto lg:min-w-[132px]
                     whitespace-nowrap
-                    rounded-xl bg-indigo-600 px-6
-                    text-base font-semibold text-white
+                    rounded-xl bg-indigo-600 px-5 lg:px-6
+                    text-[15px] lg:text-base font-semibold text-white
                     transition hover:bg-indigo-700 active:scale-[0.99]
                   "
                 >
