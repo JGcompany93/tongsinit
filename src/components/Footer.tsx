@@ -8,6 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* 사업자 정보 */}
           <div>
+            {/* 회사명 */}
             <div className="text-sm font-extrabold text-gray-900">
               제이지컴퍼니
             </div>
@@ -39,17 +40,11 @@ export default function Footer() {
             </dl>
 
             <div className="mt-6 flex items-center gap-3 text-xs text-gray-600">
-              <Link
-                to="/terms"
-                className="font-medium hover:text-gray-900"
-              >
+              <Link to="/terms" className="font-medium hover:text-gray-900">
                 이용약관
               </Link>
               <span className="text-gray-300">|</span>
-              <Link
-                to="/privacy"
-                className="font-medium hover:text-gray-900"
-              >
+              <Link to="/privacy" className="font-medium hover:text-gray-900">
                 개인정보처리방침
               </Link>
             </div>
@@ -67,13 +62,14 @@ export default function Footer() {
                 사은품은 개통 완료 및 유지 조건 충족 시 지급됩니다.
               </p>
               <p>
-                본 사이트는 통신사 공식 고객센터가 아닌, 통신상품 가입 상담 및
-                판매를 대행하는 업체입니다.
+                통신잇은 제이지컴퍼니가 운영하는 통신상품 가입 상담 및
+                판매 대행 사이트이며, 통신사 공식 고객센터가 아닙니다.
               </p>
             </div>
           </div>
         </div>
 
+        {/* 카피라이트 */}
         <div className="mt-10 text-xs text-gray-400">
           © {new Date().getFullYear()} 제이지컴퍼니. All rights reserved.
         </div>
