@@ -10,13 +10,13 @@ export default function Footer() {
           <div>
             {/* 회사명 */}
             <div className="text-sm font-extrabold text-gray-900">
-              제이지컴퍼니
+              통신잇
             </div>
 
             <dl className="mt-4 space-y-2 text-sm text-gray-700">
               <div className="flex gap-2">
-                <dt className="w-[140px] shrink-0 text-gray-500">사이트명</dt>
-                <dd className="font-medium">통신잇</dd>
+                <dt className="w-[140px] shrink-0 text-gray-500">사업자</dt>
+                <dd className="font-medium">제이지컴퍼니</dd>
               </div>
 
               <div className="flex gap-2">
@@ -31,10 +31,24 @@ export default function Footer() {
                 <dd className="font-medium">199-58-00806</dd>
               </div>
 
+               <div className="flex gap-2">
+                <dt className="w-[140px] shrink-0 text-gray-500">
+                  이메일
+                </dt>
+                <dd className="font-medium">tongsinit@gmail.com</dd>
+              </div>
+
+                <div className="flex gap-2">
+                <dt className="w-[140px] shrink-0 text-gray-500">
+                  대표번호
+                </dt>
+                <dd className="font-medium">1877-1093</dd>
+              </div>
+
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">주소</dt>
                 <dd className="font-medium">
-                  경기도 오산시 경기대로761번길 17
+                  경기도 오산시 경기대로761번길 17, 101동 802호
                 </dd>
               </div>
             </dl>

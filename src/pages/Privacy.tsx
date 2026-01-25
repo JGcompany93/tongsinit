@@ -75,7 +75,7 @@ export default function Privacy() {
         </h2>
         <p>
           개인정보 보호책임자: 제이지컴퍼니<br />
-          문의 이메일: example@naver.com
+          문의 이메일: tongsinit@gmail.com
         </p>
 
         <p className="pt-6 text-xs text-gray-400">
