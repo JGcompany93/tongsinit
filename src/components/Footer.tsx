@@ -51,6 +51,14 @@ export default function Footer() {
                   경기도 오산시 경기대로761번길 17, 101동 802호
                 </dd>
               </div>
+
+              <div className="flex gap-2">
+                <dt className="w-[140px] shrink-0 text-gray-500">통신판매업</dt>
+                <dd className="font-medium">
+                  제 2026-경기오산-0083 호
+                </dd>
+              </div>
+
             </dl>
 
             <div className="mt-6 flex items-center gap-3 text-xs text-gray-600">
