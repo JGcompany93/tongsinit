@@ -68,12 +68,12 @@ export default function HeroSection({
 
                 <span className="relative mt-6 inline-block text-5xl md:text-6xl lg:text-[68px]">
                   <span className="shine-hot drop-shadow-[0_18px_38px_rgba(255,110,0,0.18)]">
-                    최대 140만원 혜택
+                    전국 최대 혜택
                   </span>
                 </span>
 
                 <span className="mt-4 block text-5xl md:text-6xl lg:text-[68px]">
-                  당일 현금 지급!
+                  당일 지급 가능!
                 </span>
               </h1>
 
