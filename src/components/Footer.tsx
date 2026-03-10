@@ -45,10 +45,18 @@ export default function Footer() {
                 <dd className="font-medium">1877-1093</dd>
               </div>
 
+
+                <div className="flex gap-2">
+                <dt className="w-[140px] shrink-0 text-gray-500">
+                  운영시간
+                </dt>
+                <dd className="font-medium">10:00~18:00</dd>
+              </div>
+
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">주소</dt>
                 <dd className="font-medium">
-                  경기도 오산시 경기대로761번길 17, 101동 802호
+                  경기도 오산시 경기대로761번길 17
                 </dd>
               </div>
 
