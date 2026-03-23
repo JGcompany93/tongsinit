@@ -63,7 +63,7 @@ export default function Footer() {
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">통신판매업</dt>
                 <dd className="font-medium">
-                  제 2026-경기오산-0083 호
+                  제 2026-인천미추홀-0395호 
                 </dd>
               </div>
 
