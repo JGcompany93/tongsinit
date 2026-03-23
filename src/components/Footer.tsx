@@ -56,7 +56,7 @@ export default function Footer() {
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">주소</dt>
                 <dd className="font-medium">
-                  인천광역시 미추홀구 주안로 108 경향프라자 1014호
+                  인천광역시 미추홀구 주안로 108 경향프라자 1014호~1016호
                 </dd>
               </div>
 
