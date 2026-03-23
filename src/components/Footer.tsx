@@ -56,7 +56,7 @@ export default function Footer() {
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">주소</dt>
                 <dd className="font-medium">
-                  경기도 오산시 경기대로761번길 17
+                  인천광역시 미추홀구 미추홀대로734번길 25-15 신명프라자 401호 
                 </dd>
               </div>
 
