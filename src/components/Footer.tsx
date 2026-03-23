@@ -50,13 +50,13 @@ export default function Footer() {
                 <dt className="w-[140px] shrink-0 text-gray-500">
                   운영시간
                 </dt>
-                <dd className="font-medium">10:00~18:00</dd>
+                <dd className="font-medium">평일 10:00~18:00</dd>
               </div>
 
               <div className="flex gap-2">
                 <dt className="w-[140px] shrink-0 text-gray-500">주소</dt>
                 <dd className="font-medium">
-                  인천광역시 미추홀구 미추홀대로734번길 25-15 신명프라자 401호 
+                  인천광역시 미추홀구 주안로 108 경향프라자 1014호
                 </dd>
               </div>
 
